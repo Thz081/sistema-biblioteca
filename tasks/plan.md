@@ -23,7 +23,7 @@ A implementação das novas atividades ainda não foi executada. Não confundir 
 
 Vinicius saiu do grupo. Ele não recebe tarefas nesta sprint. Membros em cards históricos foram preservados, sem remoção de acesso ao quadro.
 
-Nicolly cria e mantém `SCRUM.md` conforme os cards. O `SPRINT.md` existente é histórico e não foi sobrescrito. Este plano e o índice JSON apenas registram decisões e links; o acompanhamento das tarefas permanece no Trello.
+Nicolly atualiza e mantém `SPRINT.md` conforme os cards. O arquivo principal contém a base da sprint atual; o documento anterior foi preservado em `docs/historico/SPRINT-2026-09-21-a-2026-10-05.md`. Não criar um documento Scrum duplicado. Este plano e o índice JSON apenas registram decisões e links; o acompanhamento das tarefas permanece no Trello.
 
 ## Quadro atualizado
 
@@ -62,8 +62,8 @@ Prazo final informado: quarta-feira, 04/11/2026. Horários internos: tarefas em 
 | Card | Responsável | Prazo | Link |
 |---|---|---|---|
 | Base · 01 — Criar o novo repositório a partir da main validada | Tacyo Henrique | 29/10/2026 18:00 | [Abrir](https://trello.com/c/G9pj3gpI) |
-| Scrum · 01 — Documentar objetivo e backlog da sprint no repositório | Nicolly | 29/10/2026 18:00 | [Abrir](https://trello.com/c/IHxFKfh3) |
-| Scrum · 02 — Registrar acompanhamento e revisão da sprint no repositório | Nicolly | 03/11/2026 18:00 | [Abrir](https://trello.com/c/wSaPNW4a) |
+| Scrum · 01 — Atualizar SPRINT.md com o planejamento da sprint | Nicolly | 29/10/2026 18:00 | [Abrir](https://trello.com/c/IHxFKfh3) |
+| Scrum · 02 — Manter acompanhamento e revisão no SPRINT.md | Nicolly | 03/11/2026 18:00 | [Abrir](https://trello.com/c/wSaPNW4a) |
 | Atividade 1 · 01 — Validar requisitos e critérios da implantação | Gabriel Alves | 29/10/2026 18:00 | [Abrir](https://trello.com/c/qqhZ2YKO) |
 | Atividade 1 · 02 — Unificar frontend e backend da biblioteca | Pedro Paulo | 29/10/2026 18:00 | [Abrir](https://trello.com/c/8NY7LUMu) |
 | Atividade 1 · 03 — Construir imagem unificada e testar localmente | Kerolyn | 30/10/2026 18:00 | [Abrir](https://trello.com/c/X56o0quq) |

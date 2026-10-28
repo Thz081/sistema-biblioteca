@@ -12,25 +12,25 @@
   },
   {
     "id": "Scrum · 01",
-    "titulo": "Documentar objetivo e backlog da sprint no repositório",
+    "titulo": "Atualizar SPRINT.md com o planejamento da sprint",
     "responsavel": "Nicolly",
     "cargo": "Scrum Master e PO",
     "prazo": "29/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/IHxFKfh3",
     "situacao": "A fazer",
-    "escopo": "Criar SCRUM.md com objetivo, período, cinco cargos, Product/Sprint Backlog e Definition of Done vinculados aos cards."
+    "escopo": "Atualizar SPRINT.md com objetivo, período, cinco cargos, Product/Sprint Backlog e Definition of Done vinculados aos cards."
   },
   {
     "id": "Scrum · 02",
-    "titulo": "Registrar acompanhamento e revisão da sprint no repositório",
+    "titulo": "Manter acompanhamento e revisão no SPRINT.md",
     "responsavel": "Nicolly",
     "cargo": "Scrum Master e PO",
     "prazo": "03/11/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/wSaPNW4a",
     "situacao": "Product Backlog",
-    "escopo": "Manter acompanhamento, decisões, impedimentos, revisão e retrospectiva no SCRUM.md; registrar entrega efetiva até 04/11."
+    "escopo": "Manter acompanhamento, decisões, impedimentos, revisão e retrospectiva no SPRINT.md; registrar entrega efetiva até 04/11."
   },
   {
     "id": "Atividade 1 · 01",

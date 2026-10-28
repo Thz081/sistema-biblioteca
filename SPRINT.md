@@ -1,252 +1,74 @@
-# 🏃 Sprint 1 — Sistema da Biblioteca
+# Sprint das atividades integradoras de Kubernetes
 
-**Período:** 21/09/2026 a 05/10/2026
+**Período:** 28/10/2026 a 04/11/2026.
 
----
+**Responsável por este documento:** Nicolly, Scrum Master e Product Owner.
 
-## 👥 Equipe
+**Repositório:** [Thz081/sistema-biblioteca](https://github.com/Thz081/sistema-biblioteca).
 
-| Papel | Integrante |
-| --- | --- |
-| Product Owner / Scrum Master | Nicoly Missehelli |
-| Desenvolvedor Backend | Tacyo Henrique |
-| Desenvolvedor | Pedro Paulo |
-| Desenvolvedor | Vinicius |
-| DevOps | Kerolyn |
-| Analista de Requisitos | Gabriel Alves |
+**Branch de trabalho:** `develop`.
 
----
+**Quadro:** [Biblioteca Novaris Tech](https://trello.com/b/tseoOgOv/biblioteca-novaris-tech).
 
-## 🎯 1. Objetivo da Sprint
+## Objetivo
 
-Organizar e validar o trabalho já desenvolvido no Sistema da Biblioteca, considerando que o frontend e o backend já foram implementados, os testes já foram realizados e o projeto foi apresentado até a etapa de CI/CD.
+Preparar e implantar a biblioteca no Kubernetes para a Atividade Integradora 1 e demonstrar escalabilidade, recuperação automática, atualização e rollback para a Atividade Integradora 2. A entrega final reúne um ZIP para cada atividade e a demonstração exigida pelo professor.
 
-Nesta Sprint, o foco é: levantar o que já foi feito, identificar pendências, classificar os testes automatizados, conferir o pipeline e organizar as evidências necessárias para as Atividades Integradoras 1 e 2.
+## Equipe atual
 
----
-
-## 🔍 2. Levantamento Inicial da Equipe
-
-Durante o planejamento, verificamos:
-
-- [x] Testes automatizados existentes no backend.
-- [x] Testes automatizados existentes no frontend.
-- [x] Quantidade de testes implementados em cada parte.
-- [x] Finalidade e classificação de cada teste.
-- [x] Execução dos testes por um único comando.
-- [x] Funcionamento do GitHub Actions.
-- [x] Execução do build Docker após os testes.
-- [x] Simulação de falha no pipeline.
-- [x] Atualização do README e das evidências.
-- [ ] Commits identificados de todos os integrantes.
-
----
-
-## 📋 3. Product Backlog
-
-| ID | Item | Prioridade |
+| Integrante | Função | Área de responsabilidade |
 | --- | --- | --- |
-| PB01 | Levantar testes do backend | Alta |
-| PB02 | Levantar testes do frontend | Alta |
-| PB03 | Classificar os testes automatizados | Alta |
-| PB04 | Conferir execução por comando único | Alta |
-| PB05 | Validar GitHub Actions | Alta |
-| PB06 | Conferir build Docker | Alta |
-| PB07 | Realizar simulação de falha | Alta |
-| PB08 | Atualizar README | Média |
-| PB09 | Atualizar Kanban | Alta |
-| PB10 | Conferir commits dos integrantes | Alta |
+| Tacyo Henrique | DevOps | Infraestrutura, GHCR, Kubernetes, escala, recuperação, atualização e rollback; organização do Trello |
+| Pedro Paulo | Desenvolvedor | Unificação do frontend e backend, integração de dados e alteração da aplicação |
+| Gabriel Alves | Analista de requisitos | Requisitos, critérios de aceite, validação funcional, documentação e conferência das evidências |
+| Kerolyn | DevSecOps | Segurança da imagem, segredos, permissões do pipeline e verificações de segurança |
+| Nicolly | Scrum Master e Product Owner | Planejamento da sprint, acompanhamento, impedimentos, revisão, retrospectiva e aceite das entregas |
 
----
+A equipe desta entrega tem cinco integrantes. Os responsáveis e as dependências de cada tarefa estão definidos nos cards atuais.
 
-## 📌 4. Sprint Backlog e Responsabilidades
+## Situação na abertura desta sprint
 
-| ID | Tarefa | Responsável |
-| --- | --- | --- |
-| SB01 | Levantar o que já foi realizado | Equipe |
-| SB02 | Conferir testes do backend | DevOps |
-| SB03 | Conferir testes do frontend | DevOps |
-| SB04 | Classificar cada teste | Analista de Requisitos |
-| SB05 | Conferir comando de execução | Desenvolvedores |
-| SB06 | Validar GitHub Actions e Docker | DevOps |
-| SB07 | Simular falha e corrigir pipeline | DevOps + equipe |
-| SB08 | Atualizar o Kanban | Scrum Master |
-| SB09 | Atualizar README e evidências | Product Owner + Analista |
-| SB10 | Conferir commits individuais | Scrum Master |
+O repositório novo e a branch `develop` foram criados a partir da base validada. O quadro foi reorganizado e recebeu 20 cards com responsáveis, prazos e checklists. Essas ações de preparação não significam que a implantação Kubernetes ou as entregas das duas atividades estejam concluídas.
 
-> A distribuição dos integrantes foi confirmada durante a reunião da equipe, conforme os papéis e a disponibilidade de cada membro.
+A implementação e as evidências das atividades serão registradas conforme forem executadas e verificadas. Resultados da sprint anterior não comprovam as entregas desta sprint.
 
----
+## Planejamento a organizar por Nicolly
 
-## 📅 5. Cronograma da Sprint
+Use os cards atuais como referência para detalhar o planejamento neste arquivo:
 
-### 16/09 — Quarta-feira · Levantamento e Diagnóstico
+1. Registrar o Product Backlog e selecionar o Sprint Backlog, mantendo o ID e o link de cada card.
+2. Organizar as tarefas por data, responsável e dependência. Os prazos já propostos estão no Trello; conferir a disponibilidade da equipe antes de ajustá-los.
+3. Registrar o resultado esperado de cada etapa e como será verificado.
+4. Atualizar situação, impedimentos e decisões conforme o trabalho acontecer.
+5. Ao final, registrar revisão, aceite, retrospectiva e confirmação do envio dos dois ZIPs.
 
-- Reunir a equipe.
-- Levantar as funcionalidades e testes já realizados.
-- Conferir o que foi apresentado sobre CI/CD.
-- Identificar pendências.
-- Atualizar o Kanban.
+O índice dos cards está em [tasks/trello-cards.json](tasks/trello-cards.json), e as decisões técnicas estão em [tasks/plan.md](tasks/plan.md). Este `SPRINT.md` é o documento Scrum da sprint; não é necessário criar outro arquivo para a mesma finalidade.
 
-**Entrega esperada:** lista do que foi concluído, está pendente ou precisa de validação.
+Formato sugerido para o backlog e o cronograma: **data prevista | card e link | tarefa | responsável | resultado esperado | situação | evidência**. Nicolly deve preencher as linhas com base nos cards e manter os registros de acompanhamento reais.
 
----
+## Datas de referência
 
-### 17/09 — Quinta-feira · Conferência e Classificação dos Testes
+- **28/10:** abertura e organização da sprint.
+- **29/10 a 01/11:** requisitos, adaptação, imagem, implantação e validação da Atividade 1.
+- **02/11 a 03/11:** demonstrações e validações da Atividade 2, incluindo revisão de segurança.
+- **04/11:** conferência dos ZIPs, demonstração e entrega.
 
-- Verificar os testes do backend e frontend.
-- Confirmar o mínimo exigido de 2 testes no backend e 2 no frontend.
-- Classificar os testes como Smoke, Sanidade ou Regressão.
-- Executar os testes localmente.
+O prazo final informado é **04/11/2026**. Os horários dos cards são metas internas da equipe em America/Fortaleza. A disponibilidade para o fim de semana e para 02/11 deve ser conferida durante o planejamento.
 
-**Entrega esperada:** tabela de testes com classificação e resultados.
+## Critérios para considerar uma tarefa concluída
 
----
+- O critério de aceite do card foi atendido e verificado.
+- O código ou documento correspondente está no repositório correto, quando aplicável.
+- Testes e revisões pertinentes à tarefa foram executados, com resultado registrado.
+- As evidências da biblioteca estão vinculadas ao card e não expõem credenciais ou dados pessoais.
+- A situação do card corresponde ao trabalho realizado; o aceite da PO foi registrado quando necessário.
 
-### 18/09 — Sexta-feira · Validação do CI/CD
+Esta lista define critérios de conclusão; não representa uma lista de verificações já aprovadas.
 
-- Conferir o workflow do GitHub Actions.
-- Verificar a execução dos testes.
-- Conferir a ordem do build Docker.
-- Corrigir possíveis problemas.
-- Realizar commits e push no GitHub.
+## Acompanhamento e encerramento
 
-**Entrega esperada:** pipeline validado ou pendências registradas.
+Nicolly deve registrar aqui, durante a execução, os impedimentos e decisões relevantes com data e responsável. Na revisão final, registrar requisitos atendidos, pendências, links dos entregáveis e aceite. A retrospectiva deve descrever o que funcionou, o que precisa melhorar e as ações combinadas pela equipe.
 
----
+## Histórico
 
-### 19/09 — Sábado · Simulação de Falha
-
-1. Provocar temporariamente uma falha em um teste.
-2. Executar o pipeline.
-3. Registrar o erro.
-4. Confirmar a reprovação do pipeline.
-5. Corrigir o problema.
-6. Executar novamente.
-7. Confirmar a aprovação do pipeline.
-
-**Entrega esperada:** evidência da falha, correção e aprovação.
-
----
-
-### 20/09 — Domingo · Documentação e Organização
-
-- Atualizar o README.
-- Conferir o Product Backlog e Sprint Backlog.
-- Atualizar o Kanban.
-- Organizar os registros dos testes.
-- Reunir prints e links do GitHub Actions.
-- Conferir os commits de todos os integrantes.
-
-**Entrega esperada:** documentação e evidências organizadas.
-
----
-
-### 21/09 — Segunda-feira · Revisão e Encerramento da Sprint
-
-- Revisar as tarefas concluídas.
-- Conferir a Definition of Done.
-- Verificar o pipeline aprovado.
-- Conferir os commits dos integrantes.
-- Identificar pendências.
-- Preparar a apresentação final.
-
-**Entrega esperada:** Sprint revisada e materiais organizados para entrega.
-
----
-
-## 🗂️ 6. Organização do Kanban
-
-Quadro no Trello: [Biblioteca Novaris Tech](https://trello.com/b/tseoOgOv/biblioteca-novaris-tech)
-
-As colunas do quadro são organizadas da seguinte forma:
-
-| Coluna | Significado |
-| --- | --- |
-| Backlog | Tarefas ainda não selecionadas |
-| A Fazer | Tarefas selecionadas para a Sprint |
-| Em Andamento | Tarefas em execução |
-| Em Teste | Tarefas aguardando validação |
-| Concluído | Tarefas aprovadas |
-
-Cada cartão deve conter:
-- Nome e descrição da tarefa.
-- Responsável.
-- Prioridade.
-- Estimativa.
-- Tipo de teste, quando aplicável.
-- Critério de aceitação.
-- Situação atual.
-
----
-
-## 🧪 7. Classificação dos Testes
-
-| Arquivo | Funcionalidade | Classificação | Resultado esperado |
-| --- | --- | --- | --- |
-| `test_health.py` | Disponibilidade da API | Smoke Test | API responde com HTTP 200 |
-| `test_health.py` | Versão do build/deploy | Sanidade / Smoke | Versão 1.0.0 ativa |
-| `test_api.py` | Fluxo completo (Login, Livros, Empréstimo) | Regressão / E2E | Regras de negócio executadas sem erro |
-| `test_api.py` | Restrições de permissões (RBAC) de Aluno | Sanidade / Regressão | Bloqueio 403 para operações indevidas |
-| `frontend.test.js` | Utilitários (Iniciais e Normalização de livros) | Unitário | Funções retornam dados formatados corretamente |
-
-> A classificação foi confirmada de acordo com a finalidade real dos testes implementados pela equipe.
-
----
-
-## ✅ 8. Definition of Done
-
-Uma tarefa será considerada concluída quando:
-
-- [x] A funcionalidade estiver implementada, quando aplicável.
-- [x] O teste automatizado estiver criado, quando aplicável.
-- [x] O teste executar localmente.
-- [x] O código estiver no GitHub.
-- [x] O pipeline estiver aprovado.
-- [x] O critério de aceitação for atendido.
-- [x] O cartão do Kanban estiver atualizado.
-
-### Atividade Integradora 1 — Artefatos Docker e GHCR
-
-- [x] Testes automatizados conferidos e executados pelo workflow.
-- [x] Dockerfiles do backend e frontend disponíveis.
-- [x] Compose revisado para construção local sem exigir `.env` obrigatório.
-- [x] Imagem Docker construída pelo job após a aprovação dos testes.
-- [x] Workflow base do GitHub Actions configurado.
-- [x] Login e publicação da imagem `1.0.0` no GHCR (pipeline 36771818742).
-- [x] Download local das imagens `1.0.0` e `1.0.1` com Docker em 05/10.
-- [x] Execução e validação da imagem `1.0.1` obtida do GHCR.
-- [x] Pequena alteração registrada em novo commit (`b89a4cd`, texto do login).
-- [x] Publicação da imagem `1.0.1` (pipeline 37359820924).
-- [x] Evidências técnicas e roteiro reunidos em `APRESENTACAO.md` e `RELATORIO-VALIDACAO.md`.
-
-Validação de 05/10/2026: 2 testes frontend e 5 backend passaram; build local das duas imagens concluído. Imagens publicadas `1.0.1` executadas em ambiente separado, com frontend, proxy /api/health e login ADMIN validados. A configuração de publicação foi consolidada em um workflow, com push de imagens somente em tags de versão. A aprovação remota deste ajuste deve ser confirmada em Actions.
-
----
-
-## 📦 9. Entregas Obrigatórias
-
-- [x] Link do repositório GitHub.
-- [x] Link ou imagem do quadro Kanban.
-- [x] Product Backlog e Sprint Backlog.
-- [x] Código dos testes automatizados.
-- [x] Workflow do GitHub Actions.
-- [x] README.md atualizado.
-- [x] Pipeline executado com sucesso.
-- [x] Histórico de commits dos integrantes.
-- [x] Evidência da simulação de falha e correção.
-- [x] Página do pacote no GHCR com as versões `1.0.0` e `1.0.1`.
-- [x] Comando `docker pull` e container da versão publicada registrados.
-
----
-
-## 🏁 10. Resultado Esperado
-
-Ao final da Sprint, a equipe deverá ter uma visão clara do que foi realizado, do que foi validado e do que ainda precisa ser corrigido.
-
-O objetivo é concluir as pendências prioritárias, classificar os testes, validar o CI/CD, atualizar a documentação e organizar as evidências para a entrega das Atividades Integradoras 1 e 2.
-
----
-
-**Responsável pela organização:** Nicoly Missehelli Lima de Oliveira
-**Funções:** Product Owner e Scrum Master
+O documento da sprint anterior foi preservado em [docs/historico/SPRINT-2026-09-21-a-2026-10-05.md](docs/historico/SPRINT-2026-09-21-a-2026-10-05.md). Consulte-o apenas como histórico; o período, os cargos e as conclusões atuais são os deste arquivo.
