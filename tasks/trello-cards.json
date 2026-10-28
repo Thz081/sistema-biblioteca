@@ -95,8 +95,8 @@
     "prazo": "31/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/CMEaYHrP",
-    "situacao": "Product Backlog",
-    "escopo": "Deployment com duas réplicas, probes e labels coerentes; Service e configuração reproduzíveis."
+    "situacao": "Em andamento",
+    "escopo": "YAMLs preparados e aceitos em dry-run; namespace criado. Documentação concluída. Integração aguarda imagem unificada e banco compartilhado; ver docs/devops/STATUS.md."
   },
   {
     "id": "Atividade 1 · 07",
