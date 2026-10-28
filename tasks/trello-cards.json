@@ -1,0 +1,222 @@
+[
+  {
+    "id": "Base · 01",
+    "titulo": "Criar o novo repositório a partir da main validada",
+    "responsavel": "Tacyo Henrique",
+    "cargo": "DevOps",
+    "prazo": "29/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/G9pj3gpI",
+    "situacao": "Em andamento",
+    "escopo": "Fork e develop criados em e7b64f7; conferir acessos e configuração CI/GHCR antes da publicação."
+  },
+  {
+    "id": "Scrum · 01",
+    "titulo": "Documentar objetivo e backlog da sprint no repositório",
+    "responsavel": "Nicolly",
+    "cargo": "Scrum Master e PO",
+    "prazo": "29/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/IHxFKfh3",
+    "situacao": "A fazer",
+    "escopo": "Criar SCRUM.md com objetivo, período, cinco cargos, Product/Sprint Backlog e Definition of Done vinculados aos cards."
+  },
+  {
+    "id": "Scrum · 02",
+    "titulo": "Registrar acompanhamento e revisão da sprint no repositório",
+    "responsavel": "Nicolly",
+    "cargo": "Scrum Master e PO",
+    "prazo": "03/11/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/wSaPNW4a",
+    "situacao": "Product Backlog",
+    "escopo": "Manter acompanhamento, decisões, impedimentos, revisão e retrospectiva no SCRUM.md; registrar entrega efetiva até 04/11."
+  },
+  {
+    "id": "Atividade 1 · 01",
+    "titulo": "Validar requisitos e critérios da implantação",
+    "responsavel": "Gabriel Alves",
+    "cargo": "Analista de requisitos",
+    "prazo": "29/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/qqhZ2YKO",
+    "situacao": "A fazer",
+    "escopo": "Mapear enunciado para critérios verificáveis; validar com Tacyo e Pedro a aplicação unificada e os dados compartilhados."
+  },
+  {
+    "id": "Atividade 1 · 02",
+    "titulo": "Unificar frontend e backend da biblioteca",
+    "responsavel": "Pedro Paulo",
+    "cargo": "Desenvolvedor",
+    "prazo": "29/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/8NY7LUMu",
+    "situacao": "Product Backlog",
+    "escopo": "Uma imagem e um contêiner da aplicação por Pod; preservar interface, rotas, login e consulta de livros."
+  },
+  {
+    "id": "Atividade 1 · 03",
+    "titulo": "Construir imagem unificada e testar localmente",
+    "responsavel": "Kerolyn",
+    "cargo": "DevSecOps",
+    "prazo": "30/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/X56o0quq",
+    "situacao": "Product Backlog",
+    "escopo": "Dockerfile e .dockerignore; execução não-root, contexto sem segredos e comprovação do build e funcionamento local."
+  },
+  {
+    "id": "Atividade 1 · 04",
+    "titulo": "Publicar imagem inicial da biblioteca no GHCR",
+    "responsavel": "Tacyo Henrique",
+    "cargo": "DevOps",
+    "prazo": "30/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/4J3F5Dk8",
+    "situacao": "Product Backlog",
+    "escopo": "Configurar destino do fork, publicar tag inédita da imagem unificada, registrar digest e acesso do cluster."
+  },
+  {
+    "id": "Atividade 1 · 05",
+    "titulo": "Configurar banco compartilhado e segredos",
+    "responsavel": "Pedro Paulo",
+    "cargo": "Desenvolvedor",
+    "prazo": "30/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/5GuevME9",
+    "situacao": "Product Backlog",
+    "escopo": "Implementar conexão e inicialização sem corrida; Tacyo provisiona infraestrutura e Kerolyn revisa segredos."
+  },
+  {
+    "id": "Atividade 1 · 06",
+    "titulo": "Criar Deployment com duas réplicas e Service",
+    "responsavel": "Tacyo Henrique",
+    "cargo": "DevOps",
+    "prazo": "31/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/CMEaYHrP",
+    "situacao": "Product Backlog",
+    "escopo": "Deployment com duas réplicas, probes e labels coerentes; Service e configuração reproduzíveis."
+  },
+  {
+    "id": "Atividade 1 · 07",
+    "titulo": "Validar dois Pods e funcionamento no Kubernetes",
+    "responsavel": "Gabriel Alves",
+    "cargo": "Analista de requisitos",
+    "prazo": "31/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/Tkd4GuCm",
+    "situacao": "Product Backlog",
+    "escopo": "Conferir critérios funcionais e dados entre réplicas; guardar prova dos dois Pods prontos e Service."
+  },
+  {
+    "id": "Atividade 1 · 08",
+    "titulo": "Documentar implantação e reunir evidências",
+    "responsavel": "Gabriel Alves",
+    "cargo": "Analista de requisitos",
+    "prazo": "01/11/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/KKwUhqmh",
+    "situacao": "Product Backlog",
+    "escopo": "README e índice com Dockerfile, YAML, imagem, commit e evidências reais da biblioteca."
+  },
+  {
+    "id": "Atividade 2 · 01",
+    "titulo": "Demonstrar escala de duas para quatro e retorno",
+    "responsavel": "Tacyo Henrique",
+    "cargo": "DevOps",
+    "prazo": "02/11/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/Y84rRjuW",
+    "situacao": "Product Backlog",
+    "escopo": "Registrar 2→4→2 réplicas prontas e conferir funcionamento e dados durante a escala."
+  },
+  {
+    "id": "Atividade 2 · 02",
+    "titulo": "Demonstrar recuperação automática de um Pod",
+    "responsavel": "Tacyo Henrique",
+    "cargo": "DevOps",
+    "prazo": "02/11/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/fQn7lVBZ",
+    "situacao": "Product Backlog",
+    "escopo": "Excluir um único Pod do laboratório, registrar novo UID e confirmar prontidão e dados preservados."
+  },
+  {
+    "id": "Atividade 2 · 03",
+    "titulo": "Alterar a aplicação e identificar nova versão",
+    "responsavel": "Pedro Paulo",
+    "cargo": "Desenvolvedor",
+    "prazo": "02/11/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/ytplViTH",
+    "situacao": "Product Backlog",
+    "escopo": "Alteração visível sem migração de esquema; identificar versão e executar testes relevantes."
+  },
+  {
+    "id": "Atividade 2 · 04",
+    "titulo": "Publicar nova imagem e realizar atualização",
+    "responsavel": "Tacyo Henrique",
+    "cargo": "DevOps",
+    "prazo": "03/11/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/ynuoQxer",
+    "situacao": "Product Backlog",
+    "escopo": "Publicar nova tag sem sobrescrever a anterior, realizar rollout e demonstrar a nova versão."
+  },
+  {
+    "id": "Atividade 2 · 05",
+    "titulo": "Executar rollback e validar estado final",
+    "responsavel": "Tacyo Henrique",
+    "cargo": "DevOps",
+    "prazo": "03/11/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/51lfL6TW",
+    "situacao": "Product Backlog",
+    "escopo": "Restaurar revisão correta, comprovar versão anterior, duas réplicas e dados preservados; alinhar YAML."
+  },
+  {
+    "id": "Entrega · 01",
+    "titulo": "Conferir requisitos e gerar os dois ZIPs",
+    "responsavel": "Gabriel Alves",
+    "cargo": "Analista de requisitos",
+    "prazo": "04/11/2026 12:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/kHlfB3FM",
+    "situacao": "Product Backlog",
+    "escopo": "Conferir cobertura, montar dois ZIPs com apoio técnico e revisar integridade e ausência de dados sensíveis; aceite de Nicolly."
+  },
+  {
+    "id": "Entrega · 02",
+    "titulo": "Preparar demonstração prática e confirmar envio",
+    "responsavel": "Nicolly",
+    "cargo": "Scrum Master e PO",
+    "prazo": "04/11/2026 16:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/yjbFbMWC",
+    "situacao": "Product Backlog",
+    "escopo": "Coordenar apresentação dos cinco cargos, validar entregáveis e confirmar envio com Tacyo."
+  },
+  {
+    "id": "Segurança · 01",
+    "titulo": "Integrar varreduras e revisar segredos do pipeline",
+    "responsavel": "Kerolyn",
+    "cargo": "DevSecOps",
+    "prazo": "30/10/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/gseGCjRR",
+    "situacao": "Product Backlog",
+    "escopo": "Configurar verificações de código, dependências e segredos no fork e revisar permissões do pipeline."
+  },
+  {
+    "id": "Segurança · 02",
+    "titulo": "Revisar nova imagem e sanitizar evidências finais",
+    "responsavel": "Kerolyn",
+    "cargo": "DevSecOps",
+    "prazo": "03/11/2026 18:00",
+    "fuso": "America/Fortaleza",
+    "trello": "https://trello.com/c/xHKWC3yZ",
+    "situacao": "Product Backlog",
+    "escopo": "Rever imagem atualizada, execução não-root, configurações e logs antes de liberar os ZIPs."
+  }
+]
