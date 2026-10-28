@@ -1,0 +1,27 @@
+Preparação DevOps — 2026-10-28T18:14:05.970489-03:00
+Validação de estrutura apenas; imagem, banco e funcionamento ainda não validados.
+
+$ kubectl config current-context
+docker-desktop
+exit_code=0
+
+$ kubectl --context docker-desktop get nodes
+NAME                    STATUS   ROLES           AGE   VERSION
+desktop-control-plane   Ready    control-plane   9d    v1.36.1
+exit_code=0
+
+$ kubectl --context docker-desktop apply -f k8s/namespace.yaml
+namespace/biblioteca created
+exit_code=0
+
+$ kubectl --context docker-desktop apply --dry-run=server -f k8s/configmap.yaml -f k8s/deployment.yaml -f k8s/service.yaml
+configmap/biblioteca-config created (server dry run)
+deployment.apps/biblioteca created (server dry run)
+service/biblioteca created (server dry run)
+exit_code=0
+
+$ kubectl --context docker-desktop -n biblioteca get deployment,pods,service,configmap
+NAME                         DATA   AGE
+configmap/kube-root-ca.crt   1      0s
+exit_code=0
+

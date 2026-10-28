@@ -7,8 +7,8 @@
     "prazo": "29/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/G9pj3gpI",
-    "situacao": "Em andamento",
-    "escopo": "Fork e develop criados em e7b64f7; conferir acessos e configuração CI/GHCR antes da publicação."
+    "situacao": "Concluído",
+    "escopo": "Fork e develop criados; card marcado como concluído por Tacyo. Configuração de publicação acompanha o card Atividade 1 · 04."
   },
   {
     "id": "Scrum · 01",
