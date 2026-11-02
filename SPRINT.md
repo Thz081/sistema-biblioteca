@@ -1,6 +1,6 @@
-# 🏃 Sprint 1 — Sistema da Biblioteca
+# 🏃 Sprint 1 e 2 — Sistema da Biblioteca
 
-Sprint 1 — Atividades Integradoras de Kubernetes
+Sprint 1 e 2 — Atividades Integradoras de Kubernetes
 
 Período: 28/10/2026 a 04/11/2026\
 Responsável pela documentação: Nicolly — Scrum Master e Product Owner\
