@@ -8,7 +8,7 @@ on:
       - main
       - ci-cd-final
     tags:
-      - 'v*' # Garante que o pipeline do Docker rode quando você enviar a tag v1.0.0
+      - 'v*'
 
   pull_request:
     branches:
@@ -27,11 +27,9 @@ jobs:
 
     steps:
 
-      # 1. Baixar o código
       - name: Baixar código
         uses: actions/checkout@v5
 
-      # 2. Configurar Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v5
         with:
@@ -39,15 +37,10 @@ jobs:
           cache: npm
           cache-dependency-path: frontend-biblioteca/package-lock.json
 
-      # 3. Instalar dependências Frontend
       - name: Instalar dependências Frontend
         timeout-minutes: 5
         working-directory: frontend-biblioteca
         run: npm ci --no-audit --no-fund
-
-      # ========================================================
-      # TESTES FRONTEND
-      # ========================================================
 
       - name: Testes Frontend
         working-directory: frontend-biblioteca
@@ -65,11 +58,9 @@ jobs:
 
     steps:
 
-      # 1. Baixar o código
       - name: Baixar código
         uses: actions/checkout@v5
 
-      # 2. Configurar Python
       - name: Configurar Python
         uses: actions/setup-python@v6
         with:
@@ -77,14 +68,9 @@ jobs:
           cache: pip
           cache-dependency-path: backendcombanco/requirements.txt
 
-      # 3. Instalar dependências Backend
       - name: Instalar dependências Backend
         timeout-minutes: 5
         run: python -m pip install -r backendcombanco/requirements.txt
-
-      # ========================================================
-      # TESTES BACKEND
-      # ========================================================
 
       - name: Testes Backend
         run: python -m pytest backendcombanco
@@ -99,14 +85,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    # Docker só executa se FRONTEND e BACKEND passarem em todos os testes.
     needs:
       - frontend-tests
       - backend-tests
 
     permissions:
       contents: read
-      packages: write # Permissão obrigatória para publicar no GHCR
+      packages: write
 
     steps:
 
@@ -114,7 +99,7 @@ jobs:
       - name: Baixar código
         uses: actions/checkout@v5
 
-      # 2. Converter o nome do proprietário do repositório para minúsculo
+      # 2. Converter OWNER para minúsculo e definir versão
       - name: Converter OWNER para minúsculo
         run: |
           echo "repo_owner=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
@@ -124,11 +109,11 @@ jobs:
             echo "image_version=$GITHUB_SHA" >> "$GITHUB_ENV"
           fi
 
-      # 3. Configurar o Docker Buildx
+      # 3. Configurar Docker Buildx
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v4
 
-      # 4. Autenticar no GitHub Container Registry (GHCR)
+      # 4. Autenticar no GHCR
       - name: Autenticar no GHCR
         uses: docker/login-action@v4
         with:
@@ -136,7 +121,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 5. Construir e Publicar a Imagem do Backend
+      # 5. Construir e publicar imagem do Backend
       - name: Construir e publicar imagem do Backend
         uses: docker/build-push-action@v7
         with:
@@ -145,7 +130,7 @@ jobs:
           push: ${{ startsWith(github.ref, 'refs/tags/v') }}
           tags: ghcr.io/${{ env.repo_owner }}/biblioteca-backend:${{ env.image_version }}
 
-      # 6. Construir e Publicar a Imagem do Frontend
+      # 6. Construir e publicar imagem do Frontend
       - name: Construir e publicar imagem do Frontend
         uses: docker/build-push-action@v7
         with:
@@ -153,3 +138,13 @@ jobs:
           file: ./frontend-biblioteca/Dockerfile
           push: ${{ startsWith(github.ref, 'refs/tags/v') }}
           tags: ghcr.io/${{ env.repo_owner }}/biblioteca-frontend:${{ env.image_version }}
+
+      # 7. Construir e publicar imagem unificada
+      - name: Construir e publicar imagem unificada
+        id: unified
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          tags: ghcr.io/${{ env.repo_owner }}/biblioteca:${{ env.image_version }}
