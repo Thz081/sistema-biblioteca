@@ -1,0 +1,34 @@
+Login no Pod biblioteca-69f9498cc-c8vhj e perfil autenticado no Pod biblioteca-69f9498cc-dlzvx: OK
+Cadastro, livro, exemplar, emprestimo, renovacao e devolucao entre Pods diferentes: OK (livro=1, emprestimo=1)
+Inicial: 2 Pods prontos; mesmos dados e JWT verificados em todos.
+deployment.apps/biblioteca scaled
+Waiting for deployment "biblioteca" rollout to finish: 2 of 4 updated replicas are available...
+Waiting for deployment "biblioteca" rollout to finish: 3 of 4 updated replicas are available...
+deployment "biblioteca" successfully rolled out
+Escala para quatro: 4 Pods prontos; mesmos dados e JWT verificados em todos.
+deployment.apps/biblioteca scaled
+deployment "biblioteca" successfully rolled out
+Retorno para duas: 2 Pods prontos; mesmos dados e JWT verificados em todos.
+pod "biblioteca-69f9498cc-c8vhj" deleted from biblioteca namespace
+Waiting for deployment "biblioteca" rollout to finish: 1 of 2 updated replicas are available...
+deployment "biblioteca" successfully rolled out
+Recuperacao: 2 Pods prontos; mesmos dados e JWT verificados em todos.
+Pod substituido: biblioteca-69f9498cc-c8vhj UID=42d80e23-20ec-4eaa-9a67-0c43808e3c15 -> biblioteca-69f9498cc-zc2cq UID=324bcb86-1bb5-4976-9457-ed81f1248971
+Versoes da API: 1.0.0
+NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES                                                                                                    SELECTOR
+deployment.apps/biblioteca            2/2     2            2           6m47s   app          ghcr.io/thz081/biblioteca:0.1.0@sha256:32470de27c5f5fd559a549d257a693e9525c949eb3cc7e75d8bdd7f9ae19322c   app=biblioteca
+deployment.apps/biblioteca-postgres   1/1     1            1           9m28s   postgres     postgres:17-alpine                                                                                        app=biblioteca-postgres
+
+NAME                                      READY   STATUS      RESTARTS   AGE     IP            NODE                    NOMINATED NODE   READINESS GATES
+pod/biblioteca-69f9498cc-dlzvx            1/1     Running     0          6m47s   10.244.0.12   desktop-control-plane   <none>           <none>
+pod/biblioteca-69f9498cc-zc2cq            1/1     Running     0          11s     10.244.0.15   desktop-control-plane   <none>           <none>
+pod/biblioteca-init-db-gt642              0/1     Completed   0          6m56s   10.244.0.10   desktop-control-plane   <none>           <none>
+pod/biblioteca-postgres-95cf87fbb-nn4hm   1/1     Running     0          9m28s   10.244.0.8    desktop-control-plane   <none>           <none>
+
+NAME                          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE     SELECTOR
+service/biblioteca            ClusterIP   10.96.90.23    <none>        80/TCP     6m47s   app=biblioteca
+service/biblioteca-postgres   ClusterIP   10.96.158.34   <none>        5432/TCP   9m28s   app=biblioteca-postgres
+
+NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE     VOLUMEMODE
+persistentvolumeclaim/biblioteca-postgres-data   Bound    pvc-b623ed8a-9543-40cf-ac6e-0c246a8e2acb   1Gi        RWO            standard       <unset>                 9m28s   Filesystem
+Fixtures sinteticas mantidas no banco do laboratorio para verificacao posterior. Nenhum segredo registrado.

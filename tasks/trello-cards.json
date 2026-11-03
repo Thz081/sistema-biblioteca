@@ -18,7 +18,7 @@
     "prazo": "29/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/IHxFKfh3",
-    "situacao": "A fazer",
+    "situacao": "Concluído",
     "escopo": "Atualizar SPRINT.md com objetivo, período, cinco cargos, Product/Sprint Backlog e Definition of Done vinculados aos cards."
   },
   {
@@ -29,7 +29,7 @@
     "prazo": "03/11/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/wSaPNW4a",
-    "situacao": "Product Backlog",
+    "situacao": "Em andamento",
     "escopo": "Manter acompanhamento, decisões, impedimentos, revisão e retrospectiva no SPRINT.md; registrar entrega efetiva até 04/11."
   },
   {
@@ -40,7 +40,7 @@
     "prazo": "29/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/qqhZ2YKO",
-    "situacao": "A fazer",
+    "situacao": "Em andamento",
     "escopo": "Mapear enunciado para critérios verificáveis; validar com Tacyo e Pedro a aplicação unificada e os dados compartilhados."
   },
   {
@@ -51,7 +51,7 @@
     "prazo": "29/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/8NY7LUMu",
-    "situacao": "Product Backlog",
+    "situacao": "Concluído",
     "escopo": "Uma imagem e um contêiner da aplicação por Pod; preservar interface, rotas, login e consulta de livros."
   },
   {
@@ -62,7 +62,7 @@
     "prazo": "30/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/X56o0quq",
-    "situacao": "Product Backlog",
+    "situacao": "Concluído",
     "escopo": "Dockerfile e .dockerignore; execução não-root, contexto sem segredos e comprovação do build e funcionamento local."
   },
   {
@@ -73,7 +73,7 @@
     "prazo": "30/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/4J3F5Dk8",
-    "situacao": "Product Backlog",
+    "situacao": "Concluído",
     "escopo": "Configurar destino do fork, publicar tag inédita da imagem unificada, registrar digest e acesso do cluster."
   },
   {
@@ -95,8 +95,8 @@
     "prazo": "31/10/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/CMEaYHrP",
-    "situacao": "Em andamento",
-    "escopo": "YAMLs preparados e aceitos em dry-run; namespace criado. Documentação concluída. Integração aguarda imagem unificada e banco compartilhado; ver docs/devops/STATUS.md."
+    "situacao": "Concluído",
+    "escopo": "Deployment e Service implantados; duas réplicas e funcionamento verificados. Evidências e limitações em docs/devops/STATUS.md."
   },
   {
     "id": "Atividade 1 · 07",
@@ -128,7 +128,7 @@
     "prazo": "02/11/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/Y84rRjuW",
-    "situacao": "Product Backlog",
+    "situacao": "Concluído",
     "escopo": "Registrar 2→4→2 réplicas prontas e conferir funcionamento e dados durante a escala."
   },
   {
@@ -139,7 +139,7 @@
     "prazo": "02/11/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/fQn7lVBZ",
-    "situacao": "Product Backlog",
+    "situacao": "Concluído",
     "escopo": "Excluir um único Pod do laboratório, registrar novo UID e confirmar prontidão e dados preservados."
   },
   {
@@ -161,7 +161,7 @@
     "prazo": "03/11/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/ynuoQxer",
-    "situacao": "Product Backlog",
+    "situacao": "Concluído",
     "escopo": "Publicar nova tag sem sobrescrever a anterior, realizar rollout e demonstrar a nova versão."
   },
   {
@@ -172,7 +172,7 @@
     "prazo": "03/11/2026 18:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/51lfL6TW",
-    "situacao": "Product Backlog",
+    "situacao": "Concluído",
     "escopo": "Restaurar revisão correta, comprovar versão anterior, duas réplicas e dados preservados; alinhar YAML."
   },
   {
@@ -194,7 +194,7 @@
     "prazo": "04/11/2026 16:00",
     "fuso": "America/Fortaleza",
     "trello": "https://trello.com/c/yjbFbMWC",
-    "situacao": "Product Backlog",
+    "situacao": "A fazer",
     "escopo": "Coordenar apresentação dos cinco cargos, validar entregáveis e confirmar envio com Tacyo."
   },
   {

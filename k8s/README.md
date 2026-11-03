@@ -1,56 +1,49 @@
-# Preparação Kubernetes da biblioteca
+# Laboratório Kubernetes da biblioteca
 
-Estes arquivos pertencem à parte DevOps de Tacyo. Foram preparados antecipadamente; a validação de schema não comprova que a aplicação unificada funciona. O namespace pode ser criado agora. Deployment, ConfigMap e Service só devem ser aplicados depois da imagem e do banco compartilhado estarem prontos.
+Contexto: `docker-desktop`. Todos os objetos desta entrega pertencem ao namespace `biblioteca`; a API de data e hora e os contêineres antigos são independentes. A imagem unificada executa Nginx e FastAPI em um contêiner de aplicação por Pod, como exigido pela atividade. PostgreSQL é um serviço de dados separado.
 
-## Contrato para integração
-
-- Namespace, Deployment e Service: `biblioteca`.
-- Contêiner: `app`, uma única aplicação com frontend e backend.
-- Porta proposta: 8000, a mesma já utilizada pelo backend FastAPI. A aplicação deve escutar em `0.0.0.0`.
-- Probes: GET `/health` na porta 8000. As rotas `/health` e `/version` já existem no backend; a interface precisa ser unificada por Pedro.
-- Imagem reservada: `ghcr.io/thz081/biblioteca-app:1.0.0`. Esta tag não foi construída nem publicada nesta preparação. Antes de implantar, confirmar o nome final e o digest no card de publicação.
-- ConfigMap `biblioteca-config`: apenas configurações não secretas.
-- Secret `biblioteca-secrets`: chaves `DATABASE_URL` e `JWT_SECRET`. Valores devem ser fornecidos no ambiente com revisão de Kerolyn, sem entrar no Git ou nas evidências.
-- Banco compartilhado e persistente: depende da integração de Pedro e da configuração da infraestrutura. Não usar um SQLite independente por réplica.
-- Criação automática de administrador está desabilitada para evitar inicializações concorrentes; combinar a preparação do esquema e do usuário de teste com Pedro.
-
-Esses nomes e a porta são o contrato proposto para a entrega DevOps. Gabriel valida os requisitos e Pedro/Kerolyn devem confirmar a compatibilidade da aplicação/imagem antes de ativar o Deployment. Se a integração exigir outro nome ou porta, atualizar Deployment, Service e probes juntos.
-
-## Validação sem implantar a aplicação
+## Provisionamento e configuração
 
 ```bash
-kubectl --context docker-desktop apply -f k8s/namespace.yaml
-kubectl --context docker-desktop apply --dry-run=server -f k8s/configmap.yaml -f k8s/deployment.yaml -f k8s/service.yaml
-```
-
-O segundo comando envia os objetos para validação do servidor e não persiste esses recursos. Não cria Pods nem valida a existência da imagem, do Secret ou a disponibilidade do banco. O namespace apenas separa recursos por nome; ele não estabelece isolamento de rede por si só.
-
-## Implantação após liberar as dependências
-
-Antes de executar: imagem unificada publicada e verificada, Secret criado no namespace correto, banco compartilhado acessível, esquema preparado e configuração de autenticação revisada. Confirmar o acesso do cluster ao GHCR; imagens privadas exigem configuração apropriada de imagePullSecrets.
-
-```bash
-kubectl --context docker-desktop apply -f k8s/configmap.yaml
-kubectl --context docker-desktop apply -f k8s/deployment.yaml -f k8s/service.yaml
-kubectl --context docker-desktop -n biblioteca rollout status deployment/biblioteca --timeout=120s
-kubectl --context docker-desktop -n biblioteca get deployment,pods,service -o wide
+python3 scripts/devops/bootstrap.py
+kubectl --context docker-desktop -n biblioteca get deploy,pods,svc,pvc
 kubectl --context docker-desktop -n biblioteca port-forward service/biblioteca 18080:80
 ```
 
-Em outro terminal, consultar `http://localhost:18080/`, `/health` e `/version`. A porta 18080 é uma sugestão: se estiver ocupada, escolher outra porta local. Registrar também os fluxos de login, livros e empréstimos; responder ao health não comprova todos os requisitos.
+Interface: http://localhost:18080. Health: `/api/health`. Versão: `/api/version`. Documentação: `/api/docs`. Service porta 80 → contêiner porta 8080 → proxy interno para FastAPI porta 8000. O port-forward conecta um Pod; reiniciar o comando quando esse Pod for substituído. Ele não demonstra balanceamento entre réplicas.
 
-## Operações da Atividade 2 para executar depois
+O script preserva credenciais existentes. Em uma instalação nova, gera valores aleatórios apenas na memória e envia diretamente à API Kubernetes, sem arquivos de senhas. Secret `biblioteca-secrets` contém `DATABASE_URL`, `JWT_SECRET`, `POSTGRES_PASSWORD`, `INITIAL_ADMIN_EMAIL` e `INITIAL_ADMIN_PASSWORD`. Não copiar valores para o Git, logs, Trello, prints ou ZIPs. Kubernetes Secret usa base64, que não equivale a criptografia; este ambiente é um laboratório local.
+
+O PostgreSQL possui uma réplica, Service ClusterIP e PVC de 1 GiB. Os dados não são os do SQLite antigo: não houve migração dos contêineres anteriores. O armazenamento local do Docker Desktop não constitui backup nem banco de produção com alta disponibilidade. Não expor o banco por NodePort ou porta pública.
+
+O Job `biblioteca-init-db` inicializa esquema e administrador **antes** das réplicas. Nas réplicas `CREATE_INITIAL_ADMIN=false`; o esquema já existe quando o lifespan verifica as tabelas. O Job usa a implementação existente da aplicação, sem criar uma segunda definição de esquema. No laboratório ele roda uma vez; se precisar refazê-lo, confirmar banco e configuração antes de recriar o Job. Não excluir PVC, banco ou namespace para repetir escala ou rollback.
+
+O usuário da aplicação é UID 10001/GID 999, sem elevação de privilégios. A aplicação não recebe a senha de bootstrap do administrador em suas variáveis; recebe apenas URL do banco e chave JWT. O namespace separa nomes, mas não cria por si só isolamento de rede.
+
+## Validação real das réplicas
 
 ```bash
-kubectl --context docker-desktop -n biblioteca scale deployment biblioteca --replicas=4
-kubectl --context docker-desktop -n biblioteca rollout status deployment/biblioteca --timeout=120s
-kubectl --context docker-desktop -n biblioteca get pods -l app=biblioteca
-kubectl --context docker-desktop -n biblioteca scale deployment biblioteca --replicas=2
-kubectl --context docker-desktop -n biblioteca rollout status deployment/biblioteca --timeout=120s
+python3 scripts/devops/verify_runtime.py
+python3 scripts/devops/verify_runtime.py --exercise
 ```
 
-Para recuperar um Pod, escolher um nome real de `get pods`, anotar seu UID e excluir somente esse Pod do namespace biblioteca. Aguardar o substituto e verificar os dados. Não excluir o banco, volumes, namespace ou o Deployment.
+O segundo comando verifica 2→4→2 réplicas e exclui somente um Pod da aplicação. Cada réplica é consultada individualmente por HTTP usando `kubectl exec`: a prova de consistência não depende do port-forward selecionar réplicas diferentes. São criados usuários e registros sintéticos no banco do laboratório. Evidências sanitizadas ficam em `docs/devops/evidencias/`.
 
-Para atualizar, publicar primeiro uma tag inédita após a alteração de Pedro e a revisão de Kerolyn. Consultar `rollout history` antes de alterar a imagem e anotar a revisão anterior. Usar `set image deployment/biblioteca app=...` com a imagem real publicada. Para rollback, informar a revisão anotada em `rollout undo deployment/biblioteca --to-revision=...`. Conferir a versão por HTTP e alinhar o YAML final. Não executar esses comandos com valores de exemplo ou antes das imagens estarem disponíveis.
+## Atualização e rollback
 
-Os cards só são concluídos após os resultados reais serem registrados. A preparação destes comandos não equivale à execução dos exercícios.
+Usar uma tag inédita publicada pelo CI e confirmar seu digest. A versão da API é registrada separadamente da tag da imagem. O script exige imagem da biblioteca com digest:
+
+```text
+python3 scripts/devops/verify_release.py IMAGEM_REAL_COM_DIGEST --version VERSAO_REAL_DA_API
+```
+
+Substituir ambos os argumentos pelos valores reais publicados. O script anota imagem e revisão anteriores, aplica a nova imagem, verifica versão e dados em ambos os Pods, volta à revisão anotada e verifica a versão anterior. Por fim aplica novamente a imagem nova validada para deixar o ambiente corrigido. O rollback da imagem não desfaz mudanças no banco; estas versões não alteram o esquema.
+
+Após a demonstração, alinhar a imagem de `deployment.yaml` com o estado final e aplicar o YAML. Não misturar `set image` com um YAML desatualizado. Atualizar a imagem do Job de inicialização somente em uma nova instalação ou em uma manutenção planejada: seu template é imutável depois de criado.
+
+## Referências técnicas
+
+- [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/): execução da inicialização antes da aplicação.
+- [Aplicação com armazenamento persistente](https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/): volume e separação entre dados e Pods.
+
+Os arquivos `2026-10-28-preparacao.txt` registram apenas a preparação inicial. As evidências posteriores de runtime e release são as comprovações da execução; não interpretar o dry-run antigo como demonstração funcional.

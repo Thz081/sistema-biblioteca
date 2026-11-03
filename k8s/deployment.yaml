@@ -20,11 +20,25 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/thz081/biblioteca-app:1.0.0
+          image: ghcr.io/thz081/biblioteca:0.1.2@sha256:bab085505278ce7dc632e43748b43334523e22ac61e527ac446760ce9cdc923b
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 8000
+              containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 999
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
           envFrom:
             - configMapRef:
                 name: biblioteca-config
@@ -41,13 +55,13 @@ spec:
                   key: JWT_SECRET
           readinessProbe:
             httpGet:
-              path: /health
+              path: /api/health
               port: http
             initialDelaySeconds: 2
             periodSeconds: 5
           livenessProbe:
             httpGet:
-              path: /health
+              path: /api/health
               port: http
             initialDelaySeconds: 10
             periodSeconds: 10
