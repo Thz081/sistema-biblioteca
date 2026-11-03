@@ -6,10 +6,10 @@ services:
       context: ..
       dockerfile: Dockerfile
     env_file:
-      - path: .env
+      - path: .env.unificada
         required: false
     environment:
-      DATABASE_URL: ${DATABASE_URL:-sqlite:////app/data/biblioteca.db}
+      DATABASE_URL: ${BIBLIOTECA_DATABASE_URL:-sqlite:////app/data/biblioteca.db}
     ports:
       - "127.0.0.1:18081:8080"
     volumes:

@@ -49,9 +49,9 @@ Mais detalhes, limites do laboratório, escala e rollback em [k8s/README.md](k8s
 docker compose -f backendcombanco/docker-compose.yml up -d --build
 ```
 
-Acessar **http://localhost:18081**. Usa um volume nomeado e SQLite apenas para uma instância. `DATABASE_URL` pode apontar a outro banco. A criação automática de administrador é desabilitada por padrão; configurar variáveis de inicialização em arquivo local quando necessário. Não usar SQLite separado por Pod para simular dados compartilhados.
+Acessar **http://localhost:18081**. Usa um volume nomeado e SQLite apenas para uma instância. `BIBLIOTECA_DATABASE_URL` pode apontar a outro banco. A criação automática de administrador é desabilitada por padrão; configurar variáveis de inicialização em arquivo local quando necessário. Não usar SQLite separado por Pod para simular dados compartilhados.
 
-O arquivo opcional `backendcombanco/.env` é resolvido em relação ao Compose. Não versionar credenciais. Para parar, usar `docker compose -f backendcombanco/docker-compose.yml down` sem `-v`, preservando o volume.
+O arquivo opcional `backendcombanco/.env.unificada` é resolvido em relação ao Compose. Não versionar credenciais. Para parar, usar `docker compose -f backendcombanco/docker-compose.yml down` sem `-v`, preservando o volume.
 
 ## Testes e verificação
 
