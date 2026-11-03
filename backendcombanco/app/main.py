@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title=settings.app_name, version="1.0.0", lifespan=lifespan)
+app = FastAPI(title=settings.app_name, version=settings.app_version, root_path=settings.api_root_path, lifespan=lifespan)
 
 origins = [x.strip() for x in settings.cors_origins.split(",") if x.strip()]
 app.add_middleware(
@@ -52,7 +52,7 @@ def health():
 
 @app.get("/version")
 def version():
-    return {"version": "1.0.0", "status": "online", "service": "biblioteca-api"}
+    return {"version": settings.app_version, "status": "online", "service": "biblioteca-api"}
 
 
 

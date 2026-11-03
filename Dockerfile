@@ -2,7 +2,8 @@
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    API_ROOT_PATH=/api
 
 WORKDIR /app
 
@@ -34,10 +35,10 @@ COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Usuário sem privilégios
 RUN useradd --system --uid 10001 --create-home appuser \
-    && mkdir -p /tmp/nginx \
+    && mkdir -p /tmp/nginx /app/data \
     && chown -R appuser:appuser /app /usr/share/nginx/html /tmp/nginx
 
-USER appuser
+USER 10001:999
 
 EXPOSE 8080
 

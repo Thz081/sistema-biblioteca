@@ -1,359 +1,89 @@
-# 📚 Sistema de Biblioteca
+# Sistema de Biblioteca — Novaris Tech
 
-Sistema web para gerenciamento de uma biblioteca, desenvolvido com foco no gerenciamento de livros, categorias, exemplares, usuários e empréstimos.
+Aplicação acadêmica para usuários, livros, exemplares, empréstimos, renovações e devoluções. A entrega atual executa frontend Nginx e backend FastAPI em **uma imagem e um contêiner de aplicação por Pod**. No Kubernetes, as réplicas compartilham PostgreSQL com volume persistente.
 
-O projeto também possui uma estrutura de DevOps, utilizando Docker, Docker Compose, testes automatizados e GitHub Actions para implementar um fluxo de CI/CD.
+## Equipe e acompanhamento
 
----
- 
-## 🎯 Objetivo do Projeto
+| Integrante | Responsabilidade |
+| --- | --- |
+| Tacyo Henrique | DevOps e organização do Trello |
+| Pedro Paulo | Desenvolvimento |
+| Gabriel Alves | Análise de requisitos e validação |
+| Kerolyn | DevSecOps |
+| Nicolly | Scrum Master e Product Owner |
 
-O Sistema de Biblioteca tem como objetivo disponibilizar uma aplicação para gerenciamento das principais operações de uma biblioteca.
+[Quadro Trello](https://trello.com/b/tseoOgOv/biblioteca-novaris-tech) · [SPRINT.md](SPRINT.md) · [Plano](tasks/plan.md) · [Situação técnica e pendências](docs/devops/STATUS.md).
 
-## 🎯 Objetivo da Sprint
+Fluxo de integração: desenvolver em `develop`, executar verificações e abrir PR para `main`. O fork `Thz081/sistema-biblioteca` é o destino atual; commits feitos no repositório anterior precisam ser integrados explicitamente.
 
-Implementar testes automatizados para as funcionalidades essenciais do sistema da biblioteca e executar esses testes no pipeline de CI/CD, garantindo o funcionamento do backend e frontend.
+## Imagem unificada
 
-Entre as funcionalidades do sistema estão:
+O **Dockerfile da raiz** é a definição usada no Compose, no CI e no Kubernetes. Nginx escuta em 8080 e encaminha `/api/` ao FastAPI em `127.0.0.1:8000`, dentro do mesmo contêiner. As configurações ficam em `docker/`. Os Dockerfiles individuais e `app/start.sh` são artefatos legados; não são usados no fluxo atual.
 
-- Cadastro e gerenciamento de livros;
-- Cadastro de categorias;
-- Cadastro de exemplares;
-- Cadastro de usuários;
-- Autenticação de usuários;
-- Controle de empréstimos;
-- Renovação de empréstimos;
-- Devolução de exemplares;
-- Consulta das informações da biblioteca.
+- Interface: `/`.
+- Disponibilidade: `/api/health`.
+- Versão da aplicação: `/api/version` (configuração `APP_VERSION`).
+- Documentação da API: `/api/docs`.
+- A tag da imagem e a versão da API são identificadores distintos; registrar ambos nas evidências.
 
-Além da aplicação, o projeto utiliza práticas de DevOps para automatizar a instalação, execução, testes e construção dos containers.
+## Executar no Kubernetes local
 
----
-
-## 👥 Integrantes e Papéis
-
-1. Gabriel - Analista de infraestrutura
-2. Keroly - DevOps
-3. Nicoly - Product Owner / Scrum Master
-4. Pedro Paulo - Desenvolvedor
-5. Vinicius - Desenvolvedor
-6. Tacyo Henrique - Desenvolvedor Backend / Responsável por Testes / DevOps
-
----
-
-## 📊 Quadro Kanban
-
-O acompanhamento das tarefas da Sprint (Sprint Backlog) é realizado no nosso quadro do Trello...
-🔗 **Link do Quadro:** [Trello - Biblioteca Novaris Tech](https://trello.com/b/tseoOgOv)
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-### Backend
-
-- Python
-- FastAPI
-- SQLAlchemy
-- SQLite
-- Pydantic
-- JWT
-- Uvicorn
-- Pytest
-
-### Frontend
-
-- HTML5
-- CSS3
-- JavaScript
-- Nginx
-- Vitest
-
-### DevOps
-
-- Git
-- GitHub
-- GitHub Actions
-- Docker
-- Docker Compose
-- Terraform
-- Ansible
-
----
-
-## 📁 Estrutura do Projeto
-
-```text
-entrega-sistema/
-│
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml
-│
-├── ansible/
-│
-├── backendcombanco/
-│   ├── app/
-│   ├── data/
-│   ├── database/
-│   ├── docker/
-│   │   └── Dockerfile
-│   ├── requirements.txt
-│   ├── test_api.py
-│   ├── test_health.py
-│   └── docker-compose.yml
-│
-├── frontend-biblioteca/
-│   ├── assets/
-│   ├── nginx/
-│   ├── tests/
-│   │   └── frontend.test.js
-│   ├── Dockerfile
-│   ├── index.html
-│   ├── script.js
-│   ├── style.css
-│   └── package.json
-│
-├── terraform/
-│
-├── package.json
-├── package-lock.json
-├── README.md
-├── deploy.sh
-├── destroy.sh
-└── .gitignore
-## ⚙️ Pré-requisitos
-
-Para executar o projeto localmente, é necessário possuir:
-
-- Git;
-- Node.js 20 ou superior;
-- npm;
-- Python 3.13 ou compatível;
-- Docker;
-- Docker Compose.
-
----
-
-## 📥 Instalação
-
-Após clonar o repositório, entre na pasta do projeto:
+Pré-requisitos: Docker Desktop e seu Kubernetes ativos, contexto `docker-desktop`, `kubectl` e Python 3. O provisionamento abaixo é exclusivo do namespace `biblioteca`.
 
 ```bash
-cd entrega-sistema
+python3 scripts/devops/bootstrap.py
+kubectl --context docker-desktop -n biblioteca port-forward service/biblioteca 18080:80
 ```
 
-A instalação para desenvolvimento e testes é explícita. Ative primeiro um ambiente virtual Python:
+Acessar **http://localhost:18080**. Manter o terminal do port-forward aberto; reabrir o comando se o Pod conectado for substituído durante testes.
+
+O bootstrap gera credenciais aleatórias diretamente em um Secret, preserva um Secret existente, provisiona o PostgreSQL e inicializa o esquema/administrador em Job antes de subir as duas réplicas. Não usa o banco SQLite nem os dados dos contêineres antigos. Este banco PostgreSQL é do laboratório, sem migração automática do banco antigo.
+
+O administrador inicial do laboratório usa `admin@biblioteca.example.com`. A senha não está no repositório: o operador pode consultá-la localmente com `kubectl get secret` e decodificação base64 da chave `INITIAL_ADMIN_PASSWORD`. Não copiar o valor para cards, prints ou arquivos versionados. Base64 não é criptografia.
+
+Mais detalhes, limites do laboratório, escala e rollback em [k8s/README.md](k8s/README.md).
+
+## Executar uma instância local com Compose
+
+```bash
+docker compose -f backendcombanco/docker-compose.yml up -d --build
+```
+
+Acessar **http://localhost:18081**. Usa um volume nomeado e SQLite apenas para uma instância. `DATABASE_URL` pode apontar a outro banco. A criação automática de administrador é desabilitada por padrão; configurar variáveis de inicialização em arquivo local quando necessário. Não usar SQLite separado por Pod para simular dados compartilhados.
+
+O arquivo opcional `backendcombanco/.env` é resolvido em relação ao Compose. Não versionar credenciais. Para parar, usar `docker compose -f backendcombanco/docker-compose.yml down` sem `-v`, preservando o volume.
+
+## Testes e verificação
+
+Desenvolvimento: Python 3.12 e Node.js 24, como no CI.
 
 ```bash
 python3 -m venv backendcombanco/.venv
 source backendcombanco/.venv/bin/activate
 npm run setup
-```
-
-O comando `npm run setup` instala o frontend com `npm ci`, usando seu lockfile, e o backend com `python -m pip`. Não existe `postinstall` na raiz: `npm install` ou `npm ci` na raiz não instala outros projetos nem executa Python automaticamente.
-
-Para instalar apenas um componente, use `npm run install:frontend` ou `npm run install:backend`. Para executar com Docker, essas instalações locais não são necessárias.
-
-As dependências do backend são instaladas a partir do arquivo:
-`backendcombanco/requirements.txt`
-
-As dependências do frontend são instaladas a partir do arquivo:
-`frontend-biblioteca/package.json`
-
----
-
-## ▶️ Executando o Sistema
-
-Para iniciar o sistema utilizando Docker Compose:
-
-```bash
-npm start
-```
-
-Esse comando realiza o build das imagens e inicia os serviços do projeto.
-
-### Frontend
-O frontend pode ser acessado em:
-http://localhost:8080
-
-### Backend
-A API pode ser acessada em:
-http://localhost:8000
-
-### Documentação da API
-A documentação interativa da API pode ser acessada em:
-http://localhost:8000/docs
-
----
-
-## 🐳 Docker
-
-O projeto utiliza containers Docker para executar seus componentes.
-
-- **Dockerfile do Backend:** `backendcombanco/docker/Dockerfile`
-- **Dockerfile do Frontend:** `frontend-biblioteca/Dockerfile`
-- **Docker Compose:** `backendcombanco/docker-compose.yml`
-
-O Docker Compose realiza a execução dos serviços de backend e frontend.
-
-### Comandos Docker:
-
-- **Construir as imagens:**
-  ```bash
-  npm run docker:build
-  ```
-- **Iniciar o sistema:**
-  ```bash
-  npm start
-  ```
-- **Iniciar em segundo plano:**
-  ```bash
-  npm run start:background
-  ```
-- **Visualizar os logs:**
-  ```bash
-  npm run logs
-  ```
-- **Parar os containers:**
-  ```bash
-  npm run stop
-  ```
-
----
-
-## 🧪 Testes Automatizados
-
-O projeto possui testes automatizados para o frontend e para o backend.
-
-Todos os testes podem ser executados através de um único comando:
-
-```bash
 npm test
 ```
 
-O comando executa os testes do frontend e, em seguida, os testes do backend.
+O frontend tem dois testes de utilitários. O backend tem seis testes incluindo login e carregamento de perfil. Os testes unitários não substituem a validação no Kubernetes.
 
-### Frontend
+Com o laboratório pronto, a verificação abaixo cria dados sintéticos, autentica em réplicas diferentes e confere livro, exemplar, empréstimo, renovação e devolução:
 
-O frontend utiliza **Vitest** para os testes automatizados. Atualmente são executados 2 testes:
-
-- Geração das iniciais do título do livro;
-- Normalização dos dados de um livro.
-
-Para executar somente os testes do frontend:
 ```bash
-npm run test:frontend
+python3 scripts/devops/verify_runtime.py
+# Acrescenta escala 2→4→2 e exclusão de um único Pod para comprovar recuperação:
+python3 scripts/devops/verify_runtime.py --exercise
 ```
 
-### Backend
+A verificação deixa as fixtures no banco do laboratório e registra somente resultados sanitizados em `docs/devops/evidencias/`. Não executá-la em produção. A escala retorna a duas réplicas mesmo se a validação com quatro falhar.
 
-O backend utiliza **Pytest**.
+## CI e publicação
 
-#### Classificação dos Testes
+[Workflow](.github/workflows/ci-cd.yml): testes frontend e backend, seguidos de build do Dockerfile da raiz. Tags inéditas `v*` publicam a imagem `ghcr.io/thz081/biblioteca:<versão-da-tag>`. Branches e PRs validam sem publicar. Não sobrescrever tags antigas. Os YAMLs devem fixar a imagem publicada por digest.
 
-| Arquivo de Teste | Funcionalidade | Classificação | Resultado esperado |
-| --- | --- | --- | --- |
-| `test_health.py` | Disponibilidade da API | Smoke Test | API responde com HTTP 200 |
-| `test_health.py` | Versão do build/deploy | Sanidade / Smoke | Versão 1.0.0 ativa |
-| `test_api.py` | Fluxo completo (Login, Livros, Empréstimo) | Regressão / E2E | Regras de negócio executadas sem erro |
-| `test_api.py` | Restrições de permissões (RBAC) de Aluno | Sanidade / Regressão | Bloqueio 403 para operações indevidas |
-| `frontend.test.js` | Utilitários (Iniciais e Normalização de livros) | Unitário | Funções retornam dados formatados corretamente |
+O código de 29/10 do repositório anterior foi integrado preservando sua autoria. Os caminhos de Compose/pipeline foram alinhados à imagem unificada revisada. Resultados da API de data e hora não são evidência desta entrega.
 
-Os testes verificam o funcionamento da API e um fluxo básico das operações da biblioteca, incluindo:
-- Endpoint `/health`
-- Autenticação
-- Criação de categorias
-- Criação de livros
-- Criação de exemplares
-- Criação de usuários
-- Criação de empréstimos
-- Renovação de empréstimos
-- Devolução de exemplares
+## Entregas acadêmicas
 
-Para executar somente os testes do backend:
-```bash
-npm run test:backend
-```
-
-**Resultado dos testes:**
-- Frontend: 2 testes passando
-- Backend: 5 testes passando
-- **Total:** 7 testes passando
-
----
-
-## 🔄 CI/CD com GitHub Actions
-
-O projeto utiliza GitHub Actions para automatizar a integração contínua e a construção das imagens Docker.
-
-O workflow está localizado em:
-`.github/workflows/ci-cd.yml`
-
-**O pipeline segue o seguinte fluxo:**
-`Código` → `GitHub Actions` → `Configuração do Python` → `Configuração do Node.js` → `Instalação das dependências` → `Execução dos testes` → `Docker Build`
-
-Os testes dos dois componentes executam em jobs paralelos. O frontend usa Node.js 24, cache do npm e `npm ci` somente em `frontend-biblioteca`; o backend usa Python 3.12, cache do pip e `python -m pip`. Cada componente instala suas dependências uma vez e executa seus testes. Somente após ambos passarem é executado o build das imagens Docker. A publicação no GHCR ocorre somente em pushes de tags `v*`; pushes de branches e pull requests validam os builds sem publicar imagens.
-
-As instalações têm limite de cinco minutos. Os jobs de testes têm limite de dez minutos, e o de Docker, vinte. Falhas de aquisição de runner ou erros internos do GitHub Actions são problemas de infraestrutura, diferentes de falhas de instalação ou de testes; os logs e as anotações da execução indicam qual caso ocorreu.
-
-- ❌ **Falha nos testes:** Caso algum teste falhe, o pipeline é interrompido e a etapa de Docker Build não é executada.
-- ✅ **Testes aprovados:** Caso todos os testes sejam aprovados, o pipeline prossegue para a construção das imagens. Essa estratégia garante que uma versão com testes quebrados não avance.
-
----
-
-## 🌿 Fluxo de Branches
-
-O projeto utiliza o seguinte fluxo de desenvolvimento:
-
-`develop` → `Pull Request` → `main`
-
-- As alterações devem ser desenvolvidas na branch `develop`.
-- Após a implementação e validação, é realizada uma **Pull Request** para a branch `main`.
-- A branch `main` representa a versão principal do projeto (nenhuma alteração deve ser feita diretamente nela).
-
----
-
-## 🔐 Boas Práticas
-
-O projeto utiliza um arquivo `.gitignore` para evitar o versionamento de arquivos que não devem ser enviados ao repositório, como `node_modules/`, arquivos `.env`, bancos de dados locais, caches do Python, etc. As dependências são declaradas nos arquivos de configuração correspondentes.
-
----
-
-## 🚀 Comandos Principais
-
-| Comando | Função |
-| --- | --- |
-| `npm run setup` | Instala frontend e backend com o venv Python ativo |
-| `npm run install:frontend` | Instala somente o frontend a partir do lockfile |
-| `npm run install:backend` | Instala somente o backend no Python ativo |
-| `npm test` | Executa todos os testes |
-| `npm run test:frontend` | Executa os testes do frontend |
-| `npm run test:backend` | Executa os testes do backend |
-| `npm start` | Inicia o sistema com Docker |
-| `npm run start:background` | Inicia os containers em segundo plano |
-| `npm run docker:build` | Constrói as imagens Docker |
-| `npm run logs` | Exibe os logs dos containers |
-| `npm run stop` | Para os containers |
-
----
-
-## 📌 Status do Projeto
-
-Atualmente, o projeto possui:
-
-- ✅ Backend FastAPI
-- ✅ Frontend web
-- ✅ Banco de dados SQLite
-- ✅ Autenticação
-- ✅ Testes automatizados (Frontend e Backend)
-- ✅ Docker & Docker Compose
-- ✅ GitHub Actions & Pipeline CI/CD
-- ✅ Terraform & Ansible
-- ✅ Fluxo de branches estruturado
-
----
-
-## 📄 Licença
+Atividade 1: aplicação unificada, imagem publicada, Deployment com duas réplicas, Service e validação funcional. Atividade 2: escala, recuperação, nova versão, atualização e rollback. A documentação de evidências técnicas não equivale ao aceite da PO, aos dois ZIPs ou à confirmação de envio; consultar o status antes de marcar esses cards como concluídos.
 
 Projeto desenvolvido para fins acadêmicos.

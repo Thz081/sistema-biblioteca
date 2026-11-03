@@ -1,19 +1,19 @@
+# Executar: docker compose -f backendcombanco/docker-compose.yml up -d --build
+# Para duas ou mais réplicas, usar o PostgreSQL e os manifestos em k8s/.
 services:
   biblioteca:
     build:
       context: ..
-      dockerfile: backendcombanco/docker/Dockerfile
-
-    container_name: sistema-biblioteca
-
+      dockerfile: Dockerfile
     env_file:
-      - path: ./backendcombanco/.env
+      - path: .env
         required: false
-
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-sqlite:////app/data/biblioteca.db}
     ports:
-      - "8080:80"
-
+      - "127.0.0.1:18081:8080"
     volumes:
-      - ./backendcombanco/data:/data
-
+      - biblioteca-local-data:/app/data
     restart: unless-stopped
+volumes:
+  biblioteca-local-data:
