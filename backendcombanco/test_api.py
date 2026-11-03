@@ -51,7 +51,7 @@ os.environ["CREATE_INITIAL_ADMIN"] = "true"
 
 
 # E-mail do administrador utilizado pelo teste de login.
-os.environ["INITIAL_ADMIN_EMAIL"] = "admin@test.local"
+os.environ["INITIAL_ADMIN_EMAIL"] = "admin@test.example.com"
 
 
 # Senha do administrador utilizada pelo teste de login.
@@ -130,7 +130,7 @@ def test_login_and_basic_library_flow():
         login = client.post(
             "/auth/login",
             data={
-                "username": "admin@test.local",
+                "username": "admin@test.example.com",
                 "password": "senha123"
             }
         )
@@ -335,7 +335,7 @@ def test_leitor_permissions():
     """
     with TestClient(app) as client:
         # 1. Login como Administrador para criar os dados base
-        login_admin = client.post("/auth/login", data={"username": "admin@test.local", "password": "senha123"})
+        login_admin = client.post("/auth/login", data={"username": "admin@test.example.com", "password": "senha123"})
         admin_headers = {"Authorization": f"Bearer {login_admin.json()['access_token']}"}
 
         # Cria a categoria para o livro
@@ -378,3 +378,12 @@ def test_leitor_permissions():
         allow_get_livros = client.get("/livros", headers=leitor_headers)
         assert allow_get_livros.status_code == 200
         assert len(allow_get_livros.json()) > 0
+
+def test_admin_login_and_profile():
+    """Um login válido também deve permitir carregar o perfil exibido pela interface."""
+    with TestClient(app) as client:
+        response = client.post("/auth/login", data={"username": "admin@test.example.com", "password": "senha123"})
+        assert response.status_code == 200
+        profile = client.get("/auth/me", headers={"Authorization": "Bearer " + response.json()["access_token"]})
+        assert profile.status_code == 200
+        assert profile.json()["email"] == "admin@test.example.com"

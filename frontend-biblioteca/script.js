@@ -125,6 +125,13 @@ function renderLoans() {
 }
 
 async function updateStats() {
+  if (currentUser?.perfil === "LEITOR") {
+    $("#statBooks").textContent = books.length;
+    $("#statAvailable").textContent = books.reduce((total, book) => total + book.available, 0);
+    $("#statStudents").textContent = "—";
+    $("#statLoans").textContent = loans.filter((loan) => loan.status === "ATIVO").length;
+    return;
+  }
   const dashboard = await api("/dashboard");
   $("#statBooks").textContent = dashboard.livros;
   $("#statAvailable").textContent = dashboard.disponiveis;
@@ -146,7 +153,7 @@ async function loadStudents() {
 }
 
 async function loadLoans() {
-  loans = await api("/emprestimos");
+  loans = await api(currentUser?.perfil === "LEITOR" ? "/emprestimos/me" : "/emprestimos");
   const exemplars = await Promise.all(books.map((book) => api(`/livros/${book.id}/exemplares`).catch(() => [])));
   const exemplarToBook = new Map();
   exemplars.forEach((items, index) => items.forEach((item) => exemplarToBook.set(item.id, books[index].id)));
@@ -156,11 +163,21 @@ async function loadLoans() {
 
 async function refreshData() {
   await loadBooks();
-  await Promise.all([loadStudents(), loadLoans(), updateStats()]);
+  if (currentUser?.perfil === "LEITOR") {
+    students = [];
+    renderStudents();
+    await loadLoans();
+    await updateStats();
+  } else {
+    await Promise.all([loadStudents(), loadLoans(), updateStats()]);
+  }
 }
 
 async function loadCurrentUser() {
   currentUser = await api("/auth/me");
+  const reader = currentUser.perfil === "LEITOR";
+  $$("[data-page='livros'], [data-page='alunos'], [data-page-jump='livros']").forEach((button) => button.classList.toggle("hidden", reader));
+  showPage("dashboard");
   $("#userEmail").textContent = currentUser.email;
   $("#userRole").textContent = currentUser.perfil === "BIBLIOTECARIO" ? "Bibliotecário" : currentUser.perfil === "ADMIN" ? "Administrador" : "Leitor";
 }
@@ -200,6 +217,10 @@ async function returnLoan(id) {
 }
 
 function showPage(page) {
+  if (currentUser?.perfil === "LEITOR" && ["livros", "alunos"].includes(page)) {
+    toast("Esta operação é reservada à equipe da biblioteca.", "error");
+    return;
+  }
   $$(".page").forEach((section) => section.classList.add("hidden"));
   $(`#page-${page}`).classList.remove("hidden");
   $$(".nav-item[data-page]").forEach((item) => item.classList.toggle("active", item.dataset.page === page));

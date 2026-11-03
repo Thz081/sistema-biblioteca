@@ -5,7 +5,7 @@ Sprint 1 e 2 — Atividades Integradoras de Kubernetes
 Período: 28/10/2026 a 04/11/2026\
 Responsável pela documentação: Nicolly — Scrum Master e Product Owner\
 Repositório: Thz081/sistema-biblioteca\
-Branch de trabalho: main\
+Branch de trabalho: develop\
 Quadro Scrum: Biblioteca Novaris Tech\
 
 Este arquivo é o registro oficial de planejamento e acompanhamento da sprint. As situações devem refletir o que foi efetivamente executado e validado. Planejamento, instruções dos slides e exemplos didáticos não constituem evidência de entrega.
@@ -216,7 +216,7 @@ Preencher com a equipe ao final da sprint:
  11. Referências do projeto
 
 - Repositório: sistema-biblioteca, de Thz081.
-- Branch de trabalho: main.
+- Branch de trabalho: develop.
 - Quadro Trello: Biblioteca Novaris Tech.
 - Índice dos cards: tasks/trello-cards.json.
 - Plano técnico: tasks/plan.md.
@@ -228,3 +228,11 @@ Este SPRINT.md substitui a seção provisória de planejamento, mantendo o próp
 
 Responsável pela atualização: Nicolly — Scrum Master e Product Owner.\
 Regra de manutenção: atualizar situações, resultados, impedimentos e evidências somente após confirmação no Trello, no repositório ou no ambiente de execução.
+
+## Histórico preservado
+
+O documento da sprint anterior permanece em [docs/historico/SPRINT-2026-09-21-a-2026-10-05.md](docs/historico/SPRINT-2026-09-21-a-2026-10-05.md).
+
+## Nota técnica de integração — 02/11/2026
+
+O planejamento acima foi preservado; suas tabelas registram o planejamento original. A situação técnica verificada, os commits integrados, os resultados e os impedimentos atuais estão em [docs/devops/STATUS.md](docs/devops/STATUS.md), com evidências de runtime e release. Tacyo executou a integração e as verificações nesta revisão. Nicolly ainda deve atualizar acompanhamento, revisão, retrospectiva e aceite final; ZIPs e envio não foram concluídos por esta nota.

@@ -1,0 +1,78 @@
+# Banco exclusivo do laboratório. O PVC persiste independentemente dos Pods da aplicação.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: biblioteca-postgres-data
+  namespace: biblioteca
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: biblioteca-postgres
+  namespace: biblioteca
+spec:
+  selector:
+    app: biblioteca-postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: biblioteca-postgres
+  namespace: biblioteca
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: biblioteca-postgres
+  template:
+    metadata:
+      labels:
+        app: biblioteca-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17-alpine
+          env:
+            - name: POSTGRES_DB
+              value: biblioteca
+            - name: POSTGRES_USER
+              value: biblioteca
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: biblioteca-secrets
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          readinessProbe:
+            exec:
+              command: [sh, -c, 'pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"']
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: biblioteca-postgres-data
