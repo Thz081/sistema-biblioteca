@@ -85,7 +85,9 @@ vm.runInContext(
    globalThis.testFunctions = {
      initials,
      escapeHtml,
-     normalizeBook
+     normalizeBook,
+     loadCurrentUser,
+     refreshData
    };`,
   context
 );
@@ -140,4 +142,23 @@ describe("Frontend do Sistema da Biblioteca", () => {
     });
   });
 
+});
+
+test("leitor carrega sua sessão sem consultar recursos administrativos", async () => {
+  const requests = [];
+  context.fetch = async (url) => {
+    const path = new URL(url).pathname;
+    requests.push(path);
+    if (["/usuarios", "/dashboard", "/emprestimos"].includes(path)) {
+      return { ok: false, json: async () => ({ detail: "Sem permissão" }) };
+    }
+    return { ok: true, json: async () => path === "/auth/me"
+      ? { email: "leitor@example.com", perfil: "LEITOR" } : [] };
+  };
+  await context.testFunctions.loadCurrentUser();
+  await expect(context.testFunctions.refreshData()).resolves.toBeUndefined();
+  expect(requests).toContain("/emprestimos/me");
+  expect(requests).not.toContain("/usuarios");
+  expect(requests).not.toContain("/dashboard");
+  expect(requests).not.toContain("/emprestimos");
 });

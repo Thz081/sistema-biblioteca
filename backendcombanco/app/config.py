@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     app_name: str = "Sistema de Biblioteca API"
     api_root_path: str = ""
-    app_version: str = "1.0.1"
+    app_version: str = "1.0.2"
     database_url: str = "sqlite:///./biblioteca.db"
     jwt_secret: str = "troque-esta-chave"
     access_token_expire_minutes: int = 60

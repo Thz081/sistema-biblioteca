@@ -64,7 +64,7 @@ npm run setup
 npm test
 ```
 
-O frontend tem dois testes de utilitários. O backend tem seis testes incluindo login e carregamento de perfil. Os testes unitários não substituem a validação no Kubernetes.
+O frontend tem três testes, incluindo carregamento da sessão de leitor. O backend tem seis testes incluindo login e carregamento de perfil. Os testes unitários não substituem a validação no Kubernetes.
 
 Com o laboratório pronto, a verificação abaixo cria dados sintéticos, autentica em réplicas diferentes e confere livro, exemplar, empréstimo, renovação e devolução:
 
