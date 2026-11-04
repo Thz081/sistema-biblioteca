@@ -1,29 +1,37 @@
+# Executar uma única vez antes de iniciar as réplicas da aplicação.
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: biblioteca-init-db
   namespace: biblioteca
 spec:
-  backoffLimit: 3
+  backoffLimit: 2
   template:
     spec:
       restartPolicy: Never
       containers:
         - name: init-db
-          image: ghcr.io/thz081/biblioteca:0.1.3
-          workingDir: /app
-          command: ["python", "init_db.py"]
-          envFrom:
-            - secretRef:
-                name: biblioteca-secrets
-          env:
-            - name: CREATE_INITIAL_ADMIN
-              value: "true"
+          image: ghcr.io/thz081/biblioteca:0.1.0@sha256:32470de27c5f5fd559a549d257a693e9525c949eb3cc7e75d8bdd7f9ae19322c
+          workingDir: /app/backendcombanco
+          command: [python, -c]
+          args:
+            - |
+              import asyncio
+              from app.main import app, lifespan
+              async def initialize():
+                  async with lifespan(app):
+                      print("Esquema e administrador do laboratório inicializados.")
+              asyncio.run(initialize())
           securityContext:
             runAsNonRoot: true
             runAsUser: 10001
             runAsGroup: 999
             allowPrivilegeEscalation: false
             capabilities:
-              drop:
-                - ALL
+              drop: [ALL]
+          envFrom:
+            - secretRef:
+                name: biblioteca-secrets
+          env:
+            - name: CREATE_INITIAL_ADMIN
+              value: "true"

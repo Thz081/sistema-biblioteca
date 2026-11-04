@@ -1,4 +1,4 @@
-
+from contextlib import asynccontextmanager
 from datetime import date, timedelta, datetime
 from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.security import OAuth2PasswordRequestForm
@@ -6,21 +6,34 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 from .config import settings
-from .database import get_db
-from .models import (
-    Usuario, Perfil, Categoria, Livro, Exemplar, StatusExemplar,
-    Emprestimo, StatusEmprestimo, Reserva, StatusReserva, Multa, StatusMulta
-)
+from .database import engine, get_db
+from .models import Base, Usuario, Perfil, Categoria, Livro, Exemplar, StatusExemplar, Emprestimo, StatusEmprestimo, Reserva, StatusReserva, Multa, StatusMulta
 from .schemas import *
-from .security import verify_password, create_access_token
+from .security import hash_password, verify_password, create_access_token
 from .deps import current_user, require_roles
 
 
-app = FastAPI(
-    title=settings.app_name,
-    version=settings.app_version,
-    root_path=settings.api_root_path
-)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    db = next(get_db())
+    try:
+        if settings.create_initial_admin:
+            existing = db.scalar(select(Usuario).where(Usuario.email == settings.initial_admin_email))
+            if not existing:
+                db.add(Usuario(
+                    nome="Administrador",
+                    email=settings.initial_admin_email,
+                    senha_hash=hash_password(settings.initial_admin_password),
+                    perfil=Perfil.ADMIN
+                ))
+                db.commit()
+    finally:
+        db.close()
+    yield
+
+
+app = FastAPI(title=settings.app_name, version=settings.app_version, root_path=settings.api_root_path, lifespan=lifespan)
 
 origins = [x.strip() for x in settings.cors_origins.split(",") if x.strip()]
 app.add_middleware(
