@@ -6,12 +6,12 @@ class Settings(BaseSettings):
     api_root_path: str = ""
     app_version: str = "1.0.2"
     database_url: str = "sqlite:///./biblioteca.db"
-    jwt_secret: str = "troque-esta-chave"
+    jwt_secret: str
     access_token_expire_minutes: int = 60
     cors_origins: str = "http://localhost:3000"
     create_initial_admin: bool = False
     initial_admin_email: str = "admin@biblioteca.example.com"
-    initial_admin_password: str = "TroqueEstaSenha"
+    initial_admin_password: str | None = None
     fine_per_day: float = 1.00
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")

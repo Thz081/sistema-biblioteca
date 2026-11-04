@@ -19,14 +19,28 @@ async def lifespan(app: FastAPI):
     db = next(get_db())
     try:
         if settings.create_initial_admin:
-            existing = db.scalar(select(Usuario).where(Usuario.email == settings.initial_admin_email))
+            if not settings.initial_admin_password:
+                raise RuntimeError(
+                    "INITIAL_ADMIN_PASSWORD deve ser definida quando CREATE_INITIAL_ADMIN=true"
+                )
+
+            existing = db.scalar(
+                select(Usuario).where(
+                    Usuario.email == settings.initial_admin_email
+                )
+            )
+
             if not existing:
-                db.add(Usuario(
-                    nome="Administrador",
-                    email=settings.initial_admin_email,
-                    senha_hash=hash_password(settings.initial_admin_password),
-                    perfil=Perfil.ADMIN
-                ))
+                db.add(
+                    Usuario(
+                        nome="Administrador",
+                        email=settings.initial_admin_email,
+                        senha_hash=hash_password(
+                            settings.initial_admin_password
+                        ),
+                        perfil=Perfil.ADMIN
+                    )
+                )
                 db.commit()
     finally:
         db.close()
@@ -53,7 +67,6 @@ def health():
 @app.get("/version")
 def version():
     return {"version": settings.app_version, "status": "online", "service": "biblioteca-api"}
-
 
 
 @app.post("/auth/login", response_model=TokenResponse)
@@ -341,8 +354,6 @@ def pagar_multa(multa_id: int, db: Session = Depends(get_db), user: Usuario = De
     db.commit()
     db.refresh(multa)
     return multa
-
-
 
 
 @app.get("/dashboard")

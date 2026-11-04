@@ -12,9 +12,13 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends nginx supervisor \
     && rm -rf /var/lib/apt/lists/*
 
+# Atualiza o pip para versão corrigida
+RUN pip install --no-cache-dir --upgrade "pip>=26.2"
+
 # Instala dependências do backend
 COPY backendcombanco/requirements.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
+    && pip install --no-cache-dir --upgrade "setuptools>=83.0.0" "jaraco-context>=6.1.0"
 
 # Copia o backend
 COPY backendcombanco/app ./backendcombanco/app
