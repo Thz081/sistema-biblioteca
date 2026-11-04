@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
-from jose import JWTError, jwt
+import jwt
+from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 from fastapi import HTTPException, status
 from .config import settings
@@ -33,5 +34,5 @@ def get_subject(token: str) -> str:
         if not subject:
             raise credentials_exception
         return str(subject)
-    except JWTError:
+    except InvalidTokenError:
         raise credentials_exception
