@@ -1,4 +1,4 @@
-# Executar uma única vez antes de iniciar as réplicas da aplicação.
+﻿# Executar uma Ãºnica vez antes de iniciar as rÃ©plicas da aplicaÃ§Ã£o.
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -11,7 +11,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: init-db
-          image: ghcr.io/thz081/biblioteca:0.1.0@sha256:32470de27c5f5fd559a549d257a693e9525c949eb3cc7e75d8bdd7f9ae19322c
+          image: ghcr.io/thz081/biblioteca:0.1.3@sha256:d64db01742d0c72ad4059def5d8df1ad8e3e19601c18b362e7ef32a0d862eca9
           workingDir: /app/backendcombanco
           command: [python, -c]
           args:
@@ -20,7 +20,7 @@ spec:
               from app.main import app, lifespan
               async def initialize():
                   async with lifespan(app):
-                      print("Esquema e administrador do laboratório inicializados.")
+                      print("Esquema e administrador do laboratÃ³rio inicializados.")
               asyncio.run(initialize())
           securityContext:
             runAsNonRoot: true
@@ -35,3 +35,4 @@ spec:
           env:
             - name: CREATE_INITIAL_ADMIN
               value: "true"
+

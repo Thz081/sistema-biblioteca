@@ -4,6 +4,7 @@ from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select, func
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.orm import Session
 from .config import settings
 from .database import engine, get_db
@@ -24,24 +25,33 @@ async def lifespan(app: FastAPI):
                     "INITIAL_ADMIN_PASSWORD deve ser definida quando CREATE_INITIAL_ADMIN=true"
                 )
 
-            existing = db.scalar(
-                select(Usuario).where(
-                    Usuario.email == settings.initial_admin_email
-                )
-            )
+            admin_data = {
+                "nome": "Administrador",
+                "email": settings.initial_admin_email,
+                "senha_hash": hash_password(settings.initial_admin_password),
+                "perfil": Perfil.ADMIN,
+                "ativo": True,
+            }
 
-            if not existing:
-                db.add(
-                    Usuario(
-                        nome="Administrador",
-                        email=settings.initial_admin_email,
-                        senha_hash=hash_password(
-                            settings.initial_admin_password
-                        ),
-                        perfil=Perfil.ADMIN
+            if settings.database_url.startswith("postgresql"):
+                statement = (
+                    pg_insert(Usuario)
+                    .values(**admin_data)
+                    .on_conflict_do_nothing(
+                        index_elements=[Usuario.email]
                     )
                 )
-                db.commit()
+                db.execute(statement)
+            else:
+                existing = db.scalar(
+                    select(Usuario).where(
+                        Usuario.email == settings.initial_admin_email
+                    )
+                )
+                if not existing:
+                    db.add(Usuario(**admin_data))
+
+            db.commit()
     finally:
         db.close()
     yield
